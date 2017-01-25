@@ -1,0 +1,6 @@
+framework module Pods_RequestRideDemo {
+  umbrella header "Pods-RequestRideDemo-umbrella.h"
+
+  export *
+  module * { export * }
+}
