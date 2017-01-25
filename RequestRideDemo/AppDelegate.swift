@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Configuration.setFallbackEnabled(false)
         
+        //let mainVC = SignInWithUberViewController()
         let mainVC = RequestRideWidgetViewController()
         let navVC = UINavigationController()
         navVC.viewControllers = [mainVC]
@@ -29,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Handle incoming SSO Requests
-        //RidesAppDelegate.sharedInstance.application(application, didFinishLaunchingWithOptions: launchOptions)
+        RidesAppDelegate.sharedInstance.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         return true
     }
@@ -56,20 +57,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-//    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-//        
-//        let handledUberURL = RidesAppDelegate.sharedInstance.application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as AnyObject?)
-//        
-//        return handledUberURL
-//    }
-//    
-//    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
-//        
-//        let handledUberURL = RidesAppDelegate.sharedInstance.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation as AnyObject?)
-//        
-//        return handledUberURL
-//        
-//    }
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        
+        let handledUberURL = RidesAppDelegate.sharedInstance.application(app, openURL: url, sourceApplication: options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String, annotation: options[UIApplicationOpenURLOptionsKey.annotation] as AnyObject?)
+        
+        if (!handledUberURL) {
+            // Other URL parsing logic
+        }
+        
+        return handledUberURL
+    }
+
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        
+        let handledUberURL = RidesAppDelegate.sharedInstance.application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation as AnyObject?)
+        
+        if (!handledUberURL) {
+            // Other URL parsing logic
+        }
+        
+        return handledUberURL
+        
+    }
 
 }
 

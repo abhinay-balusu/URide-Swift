@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9F282FB91E38541E0058163B /* SignInWithUberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F282FB71E38541E0058163B /* SignInWithUberViewController.swift */; };
+		9F282FBA1E38541E0058163B /* SignInWithUberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F282FB81E38541E0058163B /* SignInWithUberViewController.xib */; };
+		9F282FBE1E386EBE0058163B /* loc1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F282FBD1E386EBE0058163B /* loc1.png */; };
 		9F2E8C491E35795B00B878C9 /* marker.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F2E8C481E35795B00B878C9 /* marker.png */; };
 		9F8C89831E331C6700208DE6 /* RequestRideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8C89811E331C6700208DE6 /* RequestRideViewController.swift */; };
 		9F8C89841E331C6700208DE6 /* RequestRideViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9F8C89821E331C6700208DE6 /* RequestRideViewController.xib */; };
@@ -25,6 +28,9 @@
 /* Begin PBXFileReference section */
 		280E0DAD864F1D9678B23A60 /* Pods_RequestRideDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RequestRideDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		497120B33010F2222386AE9A /* Pods-RequestRideDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RequestRideDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RequestRideDemo/Pods-RequestRideDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		9F282FB71E38541E0058163B /* SignInWithUberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInWithUberViewController.swift; sourceTree = "<group>"; };
+		9F282FB81E38541E0058163B /* SignInWithUberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInWithUberViewController.xib; sourceTree = "<group>"; };
+		9F282FBD1E386EBE0058163B /* loc1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loc1.png; sourceTree = "<group>"; };
 		9F2E8C481E35795B00B878C9 /* marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker.png; sourceTree = "<group>"; };
 		9F8C89811E331C6700208DE6 /* RequestRideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestRideViewController.swift; sourceTree = "<group>"; };
 		9F8C89821E331C6700208DE6 /* RequestRideViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestRideViewController.xib; sourceTree = "<group>"; };
@@ -65,6 +71,7 @@
 		9F2E8C471E35794D00B878C9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9F282FBD1E386EBE0058163B /* loc1.png */,
 				9F2E8C481E35795B00B878C9 /* marker.png */,
 			);
 			name = Images;
@@ -93,6 +100,8 @@
 			children = (
 				9F2E8C471E35794D00B878C9 /* Images */,
 				9FBD31B41E3305050032E69F /* AppDelegate.swift */,
+				9F282FB71E38541E0058163B /* SignInWithUberViewController.swift */,
+				9F282FB81E38541E0058163B /* SignInWithUberViewController.xib */,
 				9F8C89851E33213800208DE6 /* RequestRideWidgetViewController.swift */,
 				9F8C89861E33213800208DE6 /* RequestRideWidgetViewController.xib */,
 				9FBE5C281E368AF200C5C5B1 /* SearchLocationViewController.swift */,
@@ -184,7 +193,9 @@
 				9FBD31BF1E3305050032E69F /* LaunchScreen.storyboard in Resources */,
 				9FBD31BC1E3305050032E69F /* Assets.xcassets in Resources */,
 				9F8C89841E331C6700208DE6 /* RequestRideViewController.xib in Resources */,
+				9F282FBA1E38541E0058163B /* SignInWithUberViewController.xib in Resources */,
 				9FBD31BA1E3305050032E69F /* Main.storyboard in Resources */,
+				9F282FBE1E386EBE0058163B /* loc1.png in Resources */,
 				9F2E8C491E35795B00B878C9 /* marker.png in Resources */,
 				9FBE5C2B1E368AF200C5C5B1 /* SearchLocationViewController.xib in Resources */,
 			);
@@ -249,6 +260,7 @@
 				9FBD31B71E3305050032E69F /* ViewController.swift in Sources */,
 				9FBE5C2A1E368AF200C5C5B1 /* SearchLocationViewController.swift in Sources */,
 				9F8C89831E331C6700208DE6 /* RequestRideViewController.swift in Sources */,
+				9F282FB91E38541E0058163B /* SignInWithUberViewController.swift in Sources */,
 				9FBD31B51E3305050032E69F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,6 +16,8 @@
                 <outlet property="currentLocationTextField" destination="ggC-c0-wxa" id="7oh-CK-9XR"/>
                 <outlet property="destinationTextField" destination="OwU-nh-2SE" id="fD7-tG-0J3"/>
                 <outlet property="mapView" destination="EvO-M0-HUD" id="Xwa-yi-DOD"/>
+                <outlet property="rideOptionsButton" destination="oDk-78-LBI" id="u6Y-gS-zGL"/>
+                <outlet property="rideOptionsTableView" destination="Afk-Et-SJ5" id="8FY-Tr-2Ic"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -71,6 +73,33 @@
                     <rect key="frame" x="165" y="343" width="44" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UaH-QL-FGG">
+                    <rect key="frame" x="327" y="169" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="jo7-Lu-4VK"/>
+                        <constraint firstAttribute="height" constant="40" id="uOg-8U-5N6"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="loc1.png"/>
+                    <connections>
+                        <action selector="goToCurrentLocation:" destination="-1" eventType="touchUpInside" id="W86-rb-Byu"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oDk-78-LBI">
+                    <rect key="frame" x="16" y="169" width="100" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" title="Ride Options">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="getRideOptions:" destination="-1" eventType="touchUpInside" id="ETQ-sf-QLq"/>
+                    </connections>
+                </button>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Afk-Et-SJ5">
+                    <rect key="frame" x="16" y="198" width="351" height="200"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -79,13 +108,16 @@
                 <constraint firstAttribute="trailing" secondItem="EvO-M0-HUD" secondAttribute="trailing" id="RuA-kP-b40"/>
                 <constraint firstItem="EvO-M0-HUD" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="aeZ-MH-i5P"/>
                 <constraint firstItem="EvO-M0-HUD" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="64" id="ckv-of-GST"/>
+                <constraint firstAttribute="trailing" secondItem="UaH-QL-FGG" secondAttribute="trailing" constant="8" id="erj-rg-1pn"/>
                 <constraint firstAttribute="trailing" secondItem="lhm-RG-mQI" secondAttribute="trailing" constant="8" id="jBG-Qi-081"/>
+                <constraint firstItem="UaH-QL-FGG" firstAttribute="top" secondItem="lhm-RG-mQI" secondAttribute="bottom" constant="8" id="jh4-rJ-kxM"/>
                 <constraint firstItem="lhm-RG-mQI" firstAttribute="top" secondItem="EvO-M0-HUD" secondAttribute="top" constant="13" id="rlF-sy-kmz"/>
             </constraints>
-            <point key="canvasLocation" x="39.5" y="-14.5"/>
+            <point key="canvasLocation" x="87" y="-423"/>
         </view>
     </objects>
     <resources>
+        <image name="loc1.png" width="512" height="512"/>
         <image name="marker.png" width="512" height="512"/>
     </resources>
 </document>

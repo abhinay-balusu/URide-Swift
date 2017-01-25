@@ -11,7 +11,7 @@ import CoreLocation
 import MapKit
 import UberRides
 
-class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITextFieldDelegate , RideRequestButtonDelegate{
+class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITextFieldDelegate , RideRequestButtonDelegate, RideRequestViewControllerDelegate, UITableViewDelegate, UITableViewDataSource{
 
     @IBOutlet weak var mapView: MKMapView!
     
@@ -37,6 +37,13 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
     var isSource : Bool!
     var dict: NSMutableDictionary!
     
+    var uberProductsDictionary : NSMutableDictionary!
+    var uberProductsArray = NSMutableArray()
+    
+    @IBOutlet weak var rideOptionsButton: UIButton!
+    
+    
+    @IBOutlet weak var rideOptionsTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +61,7 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
         //return RideRequestButton(rideParameters: rideParameters, requestingBehavior: requestBehavior)
         
         let behavior = RideRequestViewRequestingBehavior(presentingViewController: self)
+        behavior.modalRideRequestViewController.rideRequestViewController.delegate = self
         let location = CLLocation(latitude: 37.787654, longitude: -122.402760)
         let parameters = RideParametersBuilder().setPickupLocation(location).build()
         
@@ -107,6 +115,21 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
             // No Uber app, open the mobile site.
         }
         
+        //Ride Options button and TableView
+        rideOptionsTableView.delegate = self
+        rideOptionsTableView.dataSource = self
+        
+        rideOptionsTableView.separatorColor = UIColor.gray
+        rideOptionsTableView.tableFooterView = UIView(frame: CGRect.zero)
+        rideOptionsTableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        rideOptionsTableView.contentInset = UIEdgeInsetsMake(-1.0, 0.0, 0.0, 0.0)
+        
+        self.view.bringSubview(toFront: rideOptionsTableView)
+        self.view.bringSubview(toFront: rideOptionsButton)
+        
+        rideOptionsButton.isHidden = true
+        rideOptionsTableView.isHidden = true
+        
     }
     
     func setSourceAddress() {
@@ -148,6 +171,8 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
     
     func fetchUberRideEstimates(_ coord: CLLocationCoordinate2D)
     {
+        rideOptionsButton.isHidden = false
+        
         let pickUpLocation = CLLocation(latitude: sourceValue.latitude, longitude: sourceValue.longitude)
         let dropOffLocation = CLLocation(latitude: coord.latitude, longitude: coord.longitude)
         
@@ -164,29 +189,101 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
             product, response in
             if let productID = product?.productID { //check if the productID exists
                 builder = builder.setProductID(productID)
+                
                 self.button.rideParameters = builder.build()
                 
                 // show estimates in the button
                 self.button.loadRideInformation()
                 
-//                self.ridesClient.requestRide(self.button.rideParameters, completion: { (_ ride: Ride?, _ response: Response) in
-//                    
-//                    print(ride ?? "ride")
-//                    print(response.statusCode)
-//                })
-                
                 //print(self.button.rideParameters)
+                
                 print(response.statusCode)
+                
+                /*self.ridesClient.requestRide(builder.build(), completion: { ride, response in
+                    DispatchQueue.main.async(execute: {
+                        
+                        //self.checkError(response)
+                        if let ride = ride {
+                            //self.statusLabel.text = "Processing"
+                            print("Processing")
+                            // Simulate stepping through the different ride statuses
+                            guard let requestID = ride.requestID else {
+                                return
+                            }
+                            print(requestID)
+                            //self.updateRideStatus(requestID, index: 0)
+                        } else {
+                            //self.requestButton.enabled = true
+                        }
+                    })
+                })*/
+            }
+        })
+        
+        
+        
+        ridesClient.fetchProducts(pickupLocation: pickUpLocation, completion:{ products, response in
+            if let error = response.error {
+                // Handle error
+                self.showMessage(message: error.title!)
+                return
+            }
+            for product in products {
+                // Use product
+                print(product.details ?? "Details")
+                print(product.capacity)
+                print(product.name ?? "Name")
+                print(product.priceDetails?.baseFee ?? "Price")
+                print(product.priceDetails?.cancellationFee ?? "Price")
+                print(product.priceDetails?.costPerDistance ?? "Price")
+                print(product.priceDetails?.currencyCode ?? "Price")
+                print(product.priceDetails?.distanceUnit ?? "Price")
+                print(product.priceDetails?.minimumFee ?? "Price")
+                
+                self.uberProductsDictionary = NSMutableDictionary()
+                self.uberProductsDictionary.setValue(product.name, forKey: "productName")
+                self.uberProductsDictionary.setValue(product.capacity, forKey: "productCapacity")
+                self.uberProductsDictionary.setValue(product.priceDetails?.minimumFee, forKey: "productMinumumFee")
+                self.uberProductsDictionary.setValue(product.priceDetails?.currencyCode, forKey: "productCurrencyCode")
+                self.uberProductsDictionary.setValue(product.productID, forKey: "productID")
+                
+                self.uberProductsArray.add(self.uberProductsDictionary)
+                
+            }
+            
+            DispatchQueue.main.async {
+                
+                self.rideOptionsTableView.reloadData()
+                
             }
         })
 
     }
     
+    func rideRequestViewController(_ rideRequestViewController: RideRequestViewController, didReceiveError error: NSError)
+    {
+        showMessage(message: error.localizedDescription)
+    }
+    
     func rideRequestButtonDidLoadRideInformation(_ button: RideRequestButton){
         
+        print(button.rideParameters)
     }
     
     func rideRequestButton(_ button: RideRequestButton, didReceiveError error: RidesError){
+        
+        showMessage(message: error.title!)
+    }
+    
+    
+    @IBAction func getRideOptions(_ sender: Any) {
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            
+            self.rideOptionsTableView.isHidden = false
+            
+        })
+        
         
     }
     
@@ -253,6 +350,7 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
         
         //let dict = userDefaults.object(forKey: "mapItem") as? MKMapItem
         
+        
         getCurrentLocation()
     }
     
@@ -293,6 +391,13 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
             
         }
     }
+    
+    @IBAction func goToCurrentLocation(_ sender: Any) {
+        
+        didReceiveLocation = false
+        locationManager.startUpdatingLocation()
+    }
+    
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
     {
@@ -439,6 +544,83 @@ class RequestRideWidgetViewController: UIViewController, CLLocationManagerDelega
         alert.addAction(okayAction)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        
+        return uberProductsArray.count;
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        var cell = tableView.dequeueReusableCell(withIdentifier: "Cell")! as UITableViewCell;
+        
+        cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+        
+        let titleFont = UIFont(name: "Arial", size: 16.0)
+        cell.textLabel?.font  = titleFont;
+        
+        let subtitleFont = UIFont(name: "Arial", size: 14.0)
+        cell.detailTextLabel?.font  = subtitleFont;
+        
+        let rideOptionsDict = uberProductsArray[indexPath.row] as! NSMutableDictionary
+        
+        cell.textLabel?.text = rideOptionsDict.object(forKey: "productName") as! String?
+        
+        cell.detailTextLabel?.text = "Capacity: "
+        let capacity = rideOptionsDict.object(forKey: "productCapacity")!
+        cell.detailTextLabel?.text?.append("\(capacity)")
+        cell.detailTextLabel?.text?.append(", Minumum Fare: ")
+        let minFee = rideOptionsDict.object(forKey: "productMinumumFee")!
+        cell.detailTextLabel?.text?.append("\(minFee)")
+        cell.detailTextLabel?.text?.append((rideOptionsDict.object(forKey: "productCurrencyCode") as! String?)!)
+        
+        return cell;
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let rideOptionsDict = uberProductsArray[indexPath.row] as! NSMutableDictionary
+        
+        let productID = rideOptionsDict.object(forKey: "productID")
+        
+        if(!(currentLocationTextField.text?.isEmpty)! || !(destinationTextField.text?.isEmpty)!)
+        {
+            let pickUpLocation = CLLocation(latitude: sourceValue.latitude, longitude: sourceValue.longitude)
+            let dropOffLocation = CLLocation(latitude: desValue.latitude, longitude: desValue.longitude)
+            
+            print(pickUpLocation)
+            print(dropOffLocation)
+            
+            var builder = RideParametersBuilder()
+                .setPickupLocation(pickUpLocation)
+                // nickname or address is required to properly display destination on the Uber App
+                .setDropoffLocation(dropOffLocation,
+                                    nickname: destinationTextField.text)
+            
+            builder = builder.setProductID(productID as! String)
+            
+            self.button.rideParameters = builder.build()
+            
+            // show estimates in the button
+            self.button.loadRideInformation()
+            
+            rideOptionsTableView.isHidden = true
+            
+        }
+        
+    }
+
 
 
     override func didReceiveMemoryWarning() {
